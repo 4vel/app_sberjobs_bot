@@ -1,7 +1,6 @@
 import logging
-from dbsrc import Vacancy, VacancyMessage
-# from data.config import conn_string
-from sqlalchemy.exc import DBAPIError
+from dbsrc import Vacancy
+from sqlalchemy.exc import SQLAlchemyError
 
 
 def get_num_vacancies(session):
@@ -52,7 +51,6 @@ def get_vacancy_obj(vac_id, session):
     return vobj
 
 
-
 def previous_current_next(iterable):
     """Создает итератор который выдает таплы (предыдущий, текущий, следующий)
 
@@ -72,8 +70,15 @@ def previous_current_next(iterable):
         yield prv, cur, None
 
 
-def add_user_to_db():
-    pass
+def add_user_to_db(record, session):
+    """ Добавляем пользователя в базу данных """
+    try:
+        session = session()
+        session.add(record)
+        session.commit()
+        logging.info("Данные пользователя добавлены")
+    except SQLAlchemyError as err:
+        logging.info(err)
 
 
 def update_user_data_in_db():

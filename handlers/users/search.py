@@ -9,7 +9,6 @@ from loader import dp
 from dbsrc import DataAccessLayer
 from data.config import conn_string
 
-
 dal = DataAccessLayer(conn_string)
 session = dal.get_session()
 
@@ -64,6 +63,7 @@ async def take_a_look(call: CallbackQuery, state: FSMContext):
     else:
         await call.message.answer(f'{vbody}')
     await call.message.answer(f'{vlink}', reply_markup = second_choice)
+
 
 # Попробуйем отловить по встроенному фильтру, где в нашем call.data содержится "next"
 @dp.callback_query_handler(text_contains = "next")

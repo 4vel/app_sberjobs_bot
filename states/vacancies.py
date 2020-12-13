@@ -13,11 +13,11 @@ def previous_current_next(iterable):
     try:
         while True:
             nxt = next(iterable)
-            yield (prv, cur, nxt)
+            yield prv, cur, nxt
             prv = cur
             cur = nxt
     except StopIteration:
-        yield (prv, cur, None)
+        yield prv, cur, None
 
 class Vacancies(StatesGroup):
 
@@ -26,7 +26,7 @@ class Vacancies(StatesGroup):
 
     def get_list_of_tups(self, iterable):
         if iterable:
-            self.lvacs = previous_current_next(self, iterable)
+            self.lvacs = previous_current_next(iterable)
 
     Q1paginfo = State()
     Q2paginfo = State()

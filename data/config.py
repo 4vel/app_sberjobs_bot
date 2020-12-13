@@ -19,5 +19,3 @@ conn_string += f'@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}'
 admins = [
     os.getenv("ADMIN_ID"),
 ]
-
-

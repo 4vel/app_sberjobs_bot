@@ -1,7 +1,7 @@
 import datetime
 import logging
 
-from sqlalchemy import Column, Integer, VARCHAR, TIMESTAMP
+from sqlalchemy import Column, Integer, VARCHAR, TIMESTAMP, NUMERIC, BOOLEAN
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -45,24 +45,62 @@ class Vacancy(BaseModel):
         return f'{self.vactitle} {self.vacdescription}'
 
 
-class User(BaseModel):
-    """ Модель данных для таблицы вакансий """
+class TableUser(BaseModel):
+    """ Модель данных для таблицы c данными пользователей """
 
     __tablename__ = 'user'
 
-    user_id = Column(VARCHAR())
-    user_email = Column(VARCHAR(255))
+    user_id = Column(VARCHAR(), primary_key = True)
+    user_name = Column(VARCHAR())
+    user_email = Column(VARCHAR(255), primary_key = True)
     user_keywords = Column(VARCHAR())
 
-    def __init__(self, vacid, vactitle, vacdescription, vacdate, vacstatus):
-        self.vacid = vacid
-        self.vactitle = vactitle
-        self.vacdescription = vacdescription
-        self.vacdate = vacdate
-        self.vacstatus = vacstatus
+    def __init__(self, user_id, user_name, user_email, user_keywords):
+        self.user_id = user_id
+        self.user_name = user_name
+        self.user_email = user_email
+        self.user_keywords = user_keywords
 
     def __repr__(self):
-        return f'{self.vactitle} {self.vacdescription}'
+        return f'{self.user_id} {self.user_email} {self.user_keywords}'
+
+
+class TableRecommendation(BaseModel):
+    """ Модель данных для таблицы рекомендованных вакансий """
+
+    __tablename__ = 'recommendation'
+
+    user_id = Column(VARCHAR(), primary_key = True)
+    vacid = Column(VARCHAR())
+    score = Column(NUMERIC())
+
+    def __init__(self, user_id, vacid, score):
+        self.user_id = user_id
+        self.vacid = vacid
+        self.score = score
+
+    def __repr__(self):
+        return f'{self.user_id}'
+
+
+class TableUserVacancyPreference(BaseModel):
+    """ Модель данных для таблицы предпочтений пользователей """
+
+    __tablename__ = 'user_vacancy_preference'
+
+    user_id = Column(VARCHAR(), primary_key = True)
+    vacid = Column(VARCHAR(), primary_key = True)
+    liked = Column(BOOLEAN())
+    disliked = Column(BOOLEAN())
+
+    def __init__(self, user_id, vacid, liked, disliked):
+        self.user_id = user_id
+        self.vacid = vacid
+        self.liked = liked
+        self.disliked = disliked
+
+    def __repr__(self):
+        return f'{self.user_id}'
 
 
 class DataAccessLayer:
@@ -131,7 +169,7 @@ class VacancyMessage:
     def make_message(self):
         self.check_data()
         self.check_vacdescription()
-        return (self.title, self.vacdescription, self.vac_id, self.vaclink)
+        return self.title, self.vacdescription, self.vac_id, self.vaclink
 
 
 class VacNavigator:
