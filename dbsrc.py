@@ -50,9 +50,9 @@ class TableUser(BaseModel):
 
     __tablename__ = 'user'
 
-    user_id = Column(VARCHAR(), primary_key = True)
+    user_id = Column(Integer(), primary_key = True)
     user_name = Column(VARCHAR())
-    user_email = Column(VARCHAR(255), primary_key = True)
+    user_email = Column(VARCHAR(255))
     user_keywords = Column(VARCHAR())
 
     def __init__(self, user_id, user_name, user_email, user_keywords):
@@ -119,6 +119,7 @@ class DataAccessLayer:
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind = self.engine)
         self.session = self.Session()
+        return self.session
 
     def get_session(self):
         logging.info(f"Подключаюсь к БД")

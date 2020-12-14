@@ -6,11 +6,11 @@ from utils.db_api.dbutils import get_vacancy_obj, get_vacancies_by_key_words
 from dbsrc import VacancyMessage
 from keyboards.inline.choice_buttons import choice, second_choice
 from loader import dp
-from dbsrc import DataAccessLayer
-from data.config import conn_string
 
-dal = DataAccessLayer(conn_string)
-session = dal.get_session()
+# from dbsrc import DataAccessLayer
+# from data.config import conn_string
+
+from utils.db_api.dbutils import session
 
 
 # todo :
