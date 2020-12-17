@@ -1,5 +1,5 @@
 import logging
-from dbsrc import Vacancy, TableUser, DataAccessLayer
+from dbsrc import Vacancy, TableUser, DataAccessLayer, TableRecommendation
 from sqlalchemy.exc import SQLAlchemyError
 # from sqlalchemy import update
 from sqlalchemy import create_engine
@@ -27,9 +27,10 @@ def get_num_vacancies(session):
     return rows
 
 
-def get_num_vacancies_by_key_words(session):
+def get_num_vacancies_by_key_words(session, tg_user_id):
     # session = session()
-    list_of_vacs = session.query(Vacancy.vacid).filter(Vacancy.vactitle.op('~')(r"python|Руководитель")).all()
+    print(type("TYPE!", tg_user_id))
+    list_of_vacs = session.query(TableRecommendation.vacid).filter(TableRecommendation.user_id == str(tg_user_id)).all()
     session.commit()
 
     return len(list_of_vacs)
@@ -52,9 +53,9 @@ def get_first_vacancy_id(session):
     return vacancy_id
 
 
-def get_vacancies_by_key_words(session):
+def get_vacancies_by_key_words(session, tg_user_id):
     # session = session()
-    list_of_vacs = session.query(Vacancy.vacid).filter(Vacancy.vactitle.op('~')(r"python|Руководитель")).all()
+    list_of_vacs = session.query(TableRecommendation.vacid).filter(TableRecommendation.user_id == tg_user_id).all()
     session.commit()
     list_of_vacs = [x[0] for x in list_of_vacs]
 

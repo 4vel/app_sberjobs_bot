@@ -15,13 +15,16 @@ from utils.db_api.dbutils import session
 
 # todo :
 # Поправить разбиение больших сообщений
-# Добавить внесение ключевых слов
-# Добавить поиск по внесенным ключевым словам
-# Выводить id вакансии
+# Добавить внесение ключевых слов +
+# Добавить поиск по внесенным ключевым словам... надо подумать
+# Выводить id вакансии и url
 
 @dp.message_handler(Command("get_vacancies"))
 async def show_items(message: Message, state: FSMContext):
-    list_of_vacs = get_vacancies_by_key_words(session)
+
+    # print(message.from_user.id)
+    tg_user_id = message.from_user.id
+    list_of_vacs = get_vacancies_by_key_words(session, tg_user_id)
     num_vacancies = len(list_of_vacs)
 
     if list_of_vacs:
