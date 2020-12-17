@@ -50,7 +50,7 @@ class TableUser(BaseModel):
 
     __tablename__ = 'user'
 
-    user_id = Column(Integer(), primary_key = True)
+    user_id = Column(VARCHAR(), primary_key = True)
     user_name = Column(VARCHAR())
     user_email = Column(VARCHAR(255))
     user_keywords = Column(VARCHAR())
