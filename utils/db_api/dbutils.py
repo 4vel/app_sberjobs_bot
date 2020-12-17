@@ -21,7 +21,7 @@ def table_exists(name):
 
 
 def get_num_vacancies(session):
-    # session = session()
+
     rows = session.query(Vacancy).count()
     session.commit()
     return rows
@@ -55,10 +55,11 @@ def get_first_vacancy_id(session):
 
 def get_vacancies_by_key_words(session, tg_user_id):
     # session = session()
+    tg_user_id = str(tg_user_id)
     list_of_vacs = session.query(TableRecommendation.vacid).filter(TableRecommendation.user_id == tg_user_id).all()
     session.commit()
     list_of_vacs = [x[0] for x in list_of_vacs]
-
+    print(len(list_of_vacs))
     return list_of_vacs
 
 

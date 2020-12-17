@@ -17,7 +17,7 @@ async def bot_start(message: types.Message):
         user_email = "email"
     )
     add_user_to_db(rec)
-    await message.answer(f'Твой user_id {message.from_user.id}')
+    # await message.answer(f'Твой user_id {message.from_user.id}')
     await message.answer(f'Ты благополучно зарегистрирован')
 
 
