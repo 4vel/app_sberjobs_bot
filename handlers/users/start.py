@@ -11,7 +11,7 @@ async def bot_start(message: types.Message):
     await message.answer(f'Привет, {message.from_user.full_name}!')
 
     rec = TableUser(
-        user_id = message.from_user.id,
+        user_id = str(message.from_user.id),
         user_name = message.from_user.full_name,
         user_keywords = "",
         user_email = "email"
