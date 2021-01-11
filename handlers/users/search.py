@@ -51,21 +51,28 @@ async def take_a_look(call: CallbackQuery, state: FSMContext):
     logging.info(f"{callback_data} {cur_vacancy_id}")
 
     vobj = get_vacancy_obj(cur_vacancy_id, session)
-    vmessage = VacancyMessage(vobj)
-    vtitle, vbody, vid, vlink = vmessage.make_message()
+    if vobj:
+        vmessage = VacancyMessage(vobj)
+        vtitle, vbody, vid, vlink = vmessage.make_message()
 
-    if cur_vac_ix < len(list_of_vacs):
-        async with state.proxy() as data:
-            data["next_vacancy_id"] = list_of_vacs[cur_vac_ix + 1]
+        if cur_vac_ix < len(list_of_vacs):
+            async with state.proxy() as data:
+                data["next_vacancy_id"] = list_of_vacs[cur_vac_ix + 1]
 
-    await call.message.answer(f'{vtitle}')
+        await call.message.answer(f'{vtitle}')
 
-    if isinstance(vbody, list):
-        for el in vbody:
-            await call.message.answer(f'{el}')
+        if isinstance(vbody, list):
+            for el in vbody:
+                await call.message.answer(f'{el}')
+        else:
+            await call.message.answer(f'{vbody}')
+        await call.message.answer(f'{vlink}', reply_markup = second_choice)
+
     else:
-        await call.message.answer(f'{vbody}')
-    await call.message.answer(f'{vlink}', reply_markup = second_choice)
+        if cur_vac_ix < len(list_of_vacs):
+            async with state.proxy() as data:
+                data["next_vacancy_id"] = list_of_vacs[cur_vac_ix + 1]
+        await call.message.answer(f'Возможно вакансия удалена', reply_markup = second_choice)
 
 
 # Попробуйем отловить по встроенному фильтру, где в нашем call.data содержится "next"
